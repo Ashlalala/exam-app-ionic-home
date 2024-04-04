@@ -22,19 +22,18 @@ const routes = [
       {
         path: 'tab3',
         component: () => import('@/views/Tab3Page.vue')
-      }
-    ]
-  },
-  {
-    path: '/exams/:category',
-    component: () => import('@/views/SubCatsPage.vue'),
-    children: [
+      },
       {
-        path: '/:subCategory',
+        path: '/exams/:category',
+        component: () => import('@/views/SubCatsPage.vue'),
+      },
+      {
+        path: '/exams/:category/:subCategory',
         component: () => import('@/views/ExamSubCatsPage.vue')
       }
     ]
   },
+
 
 ]
 

@@ -12,12 +12,11 @@
         </ion-item>
       </ion-item-group>
     </ion-list>
-    <ExamList />
   </base-layout>
 </template>
 
 <script setup>
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonItem, IonItemGroup } from '@ionic/vue';
+import { IonItem, IonItemGroup } from '@ionic/vue';
 import { IonLabel, IonList, IonListHeader } from '@ionic/vue'; //for the list 
 
 import ExamList from '@/components/ExamList.vue';
