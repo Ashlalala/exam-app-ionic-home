@@ -1,6 +1,6 @@
 <template>
   <base-layout>
-    <div>dsds</div>
+    <div><router-link to="/profile/completed/6">completed</router-link></div>
   </base-layout>
 </template>
 

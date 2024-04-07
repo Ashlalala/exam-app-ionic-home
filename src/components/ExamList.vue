@@ -1,9 +1,10 @@
 <template>
   <ion-list>
     <ion-list-header>
-      <ion-label>Physics > Partical</ion-label>
+      <ion-label><h1>{{firstBig(cat)}} > {{firstBig(subCat)}}</h1></ion-label>
     </ion-list-header>
-    <ion-item v-for="exam in exams">
+    <!-- //change to ion-card  -->
+    <ion-item v-for="exam in exams" :router-link="'/exam/' + exam.id"> 
       <ion-label class="ion-text-nowrap">
         <h2>{{ exam.name }}</h2>
         <p>{{ exam.description }}</p>
@@ -14,7 +15,6 @@
 
 <script setup>
 import { IonItem, IonLabel, IonList, IonListHeader } from '@ionic/vue'; //for the list 
-import axios from 'axios';
 import { ref } from 'vue';
 import { inject } from 'vue'
 const API_URL = inject('API_URL')
@@ -24,9 +24,20 @@ defineProps({
   exams: {
     type: Array,
     required: true
+  },
+  cat: {
+    type: String,
+    required: true
+  },
+  subCat: {
+    type: String,
+    required: true
   }
 })
 
-const response = ref({})
+
+function firstBig(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 </script>

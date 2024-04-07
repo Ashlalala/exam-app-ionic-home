@@ -23,12 +23,18 @@ import "@ionic/vue/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
+// import './index.css'
+
 import BaseLayout from "@/components/BaseLayout.vue";
 
 import axios from "axios";
 import VueAxios from "vue-axios";
+import { createPinia } from 'pinia'
 
-const app = createApp(App).use(IonicVue).use(VueAxios, axios).use(router);
+const pinia = createPinia()
+
+const app = createApp(App).use(pinia).use(IonicVue).use(VueAxios, axios).use(router);
+
 app.component("base-layout", BaseLayout);
 
 app.provide("API_URL", "http://localhost:8000");

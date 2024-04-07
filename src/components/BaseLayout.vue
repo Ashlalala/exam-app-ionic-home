@@ -25,6 +25,17 @@ defineProps({
     type: String
   }
 })
+
+const emit = defineEmits(['refresh'])
+
+
+const handleRefresh = event => {
+  setTimeout(() => {
+    // Any calls to load data go here
+    emit('refresh', true)
+    event.target.complete();
+  }, 2000);
+};
 </script>
 
 <style scoped></style>
