@@ -1,9 +1,9 @@
 <template>
   <base-layout title="Exams">
-    <ion-button  id="click-trigger" expand="full">Create Category</ion-button>
-    <ion-popover  trigger="click-trigger" trigger-action="click" size="cover">
+    <ion-button @click.prevent="popoverOpen = !popoverOpen" id="click-trigger-2" expand="full">Create Category</ion-button>
+    <ion-popover :is-open="popoverOpen" trigger="click-trigger-2" trigger-action="click" size="cover">
       <ion-content class="ion-padding">
-        <CreateCat @uploaded="uploaded"/>
+        <CreateCat @uploaded="uploaded" />
       </ion-content>
     </ion-popover>
     <ion-list>
@@ -37,7 +37,6 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
-
 const API_URL = inject('API_URL')
 
 
@@ -50,7 +49,7 @@ const response = ref({})
 onMounted(() => {
   getCats()
 })
-function getCats(){
+function getCats() {
   // axios.get('http://localhost:8000/sanctum/csrf-cookie')
   axios.get(API_URL + '/api/exams/cats').then(res => {
     console.log(res)
@@ -59,10 +58,11 @@ function getCats(){
 }
 
 function uploaded(){
-  router.go()
+  popoverOpen.value = false
+  getCats()
 }
 
-function refresh(){
+function refresh() {
   getCats()
 }
 

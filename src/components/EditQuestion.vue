@@ -1,18 +1,9 @@
 <template>
   <div>
-    <ion-segment value="default">
-      <ion-segment-button @click="form.type = 'full'" value="default">
-        <ion-label>Alternatives</ion-label>
-      </ion-segment-button>
-      <ion-segment-button @click="form.type = 'part'" value="segment">
-        <ion-label>Matching</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-
-    <form v-if="form.type == 'full'" @submit.prevent="uploadAltQA">
+    <form v-if="qa.type == 'qa'" @submit.prevent="uploadAltQA">
       <ion-list>
         <ion-item>
-          <ion-input v-model="form.question" label="Question *" autofocus placeholder="Enter the question"></ion-input>
+          <ion-input v-model="form.question" label="Question *" :value="qa.question" autofocus placeholder="Enter the question"></ion-input>
         </ion-item>
         <ion-item>
           <ion-input v-model="form.ans_r" label="Right answer *" placeholder="Enter the right answer"></ion-input>
@@ -35,7 +26,7 @@
       </ion-list>
       <ion-button type="submit" @click.prevent expand="block">Submit</ion-button>
     </form>
-    <form v-if="form.type == 'part'" @submit.prevent="uploadMatchQA">
+    <form v-if="qa.type == 'group'" @submit.prevent="uploadMatchQA">
       <ion-list>
         <ion-item>
           <ion-list>
@@ -77,25 +68,35 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { inject } from 'vue';
 import { IonButton, IonList, IonListHeader, IonInput, IonItem, } from '@ionic/vue'; //for the list 
-import { IonSegment, IonSegmentButton, IonLabel } from '@ionic/vue'; //for the segment 
+
+
+const props = defineProps({
+  qa: {
+    type: Object,
+    required: true
+  }
+})
+
+const emit = defineEmits(['updated', 'remove'])
 
 
 const routeParams = useRoute().params
 const API_URL = inject('API_URL')
 const URL_EXAM_ID = routeParams.examId
 
-const emit = defineEmits(['updated'])
 
-const form = ref({
-  type: 'full',
-  question: null,
-  ans_r: null,
-  ans_1: null,
-  ans_2: null,
-  ans_3: null,
-  ans_4: null,
-  ans_5: null,
-})
+
+
+
+const form = ref({})
+
+form.value = props.qa.form
+
+console.log(props.qa);
+
+const qaId = props.qa.id
+
+const qaIdPart = ref(null)
 
 
 async function uploadAltQA() {
@@ -109,7 +110,7 @@ async function uploadAltQA() {
 
     // const userLogin = await JSON.parse(localStorage.getItem('userLogin'));
 
-    await axios.post(API_URL + '/api/exam/' + URL_EXAM_ID + '/qa', form.value, {
+    await axios.post(API_URL + '/api/exam/' + URL_EXAM_ID + '/qa/' + qaId + '?_method=PATCH', form.value, {
       headers: {
         "Content-Type": "multipart/form-data",
         accept: 'application/json',
@@ -118,10 +119,6 @@ async function uploadAltQA() {
     }).then(res => {
       console.log(res)
       emit('uploaded', true)
-      form.value = {
-        type:'full'
-      }
-
     })
   } catch (e) {
     console.log(e);
@@ -148,7 +145,7 @@ async function uploadMatchQA() {
 
     // const userLogin = await JSON.parse(localStorage.getItem('userLogin'));
 
-    await axios.post(API_URL + '/api/exam/' + URL_EXAM_ID + '/group', formMatchQA, {
+    await axios.post(API_URL + '/api/exam/' + URL_EXAM_ID + '/group/' + qaId + '?_method=PATCH', formMatchQA, {
       headers: {
         "Content-Type": "multipart/form-data",
         accept: 'application/json',
@@ -156,15 +153,14 @@ async function uploadMatchQA() {
       }
     }).then(res => {
       console.log(res)
-      form.value = {
-        type:'part'
-      }
       emit('uploaded', true)
     })
   } catch (e) {
     console.log(e);
   }
 }
+
+
 
 async function uploadPartQA(q, a){
   const qaPartForm = {
@@ -192,4 +188,32 @@ async function uploadPartQA(q, a){
   }
   return output //change this to return at then(()=>{}) 
 }
+
+// async function uploadPartQA(q, a){
+//   const qaPartForm = {
+//     type: 'part',
+//     question: q,
+//     ans_r: a,
+//     exam_id: URL_EXAM_ID,
+//   }
+//   console.log('qaPartForm', qaPartForm)
+//   let output = null  
+//   try {
+//     // const userLogin = await JSON.parse(localStorage.getItem('userLogin'));
+//     await axios.patch(API_URL + '/api/exam/' + URL_EXAM_ID + '/qa/' + qaId + '?_method=PATCH', qaPartForm, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         accept: 'application/json',
+//         // Authorization: 'Bearer ' + userLogin.token
+//       }
+//     }).then(res => {
+//       output = res.data.id
+//     })
+//   } catch (e) {
+//     console.log(e);
+//   }
+//   console.log(output)
+
+//   return output //change this to return at then(()=>{}) 
+// }
 </script>

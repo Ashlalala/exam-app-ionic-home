@@ -38,4 +38,6 @@ const handleRefresh = event => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

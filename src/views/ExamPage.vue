@@ -1,6 +1,6 @@
 <template>
 <base-layout title="Exams">
-
+  Reload function activate when getting back to this page after editing
   <template v-if="response.exam && response.owner">
     <ExamCard :response="response"/>
   </template>
@@ -34,6 +34,8 @@ const response = ref({})
 onMounted(async () => {
   await getExamAndOwner()
   await getQAs()
+  await getGroups()
+  response.value.exam.qAmount = response.value.qas.length + response.value.groups.length
 })
 
 async function getQAs() {
@@ -41,7 +43,16 @@ async function getQAs() {
     console.log(res)
     // emit('uploaded', true)
     response.value.qas=res.data.data
-    response.value.exam.qAmount = res.data.data.length
+
+  })
+}
+
+async function getGroups() {
+  await axios.get(API_URL + '/api/exam/' + URL_EXAM_ID + '/group').then(res => {
+    response.value.groups = []
+    res.data.data.forEach(g => {
+      response.value.groups.push(g)
+    })
   })
 }
 

@@ -1,6 +1,6 @@
 <template>
   <base-layout title="Exams">
-  <ion-button @click.prevent="popoverOpen = true" id="click-trigger" expand="full">Create Sub-category in {{ firstBig(URL_CAT) }}</ion-button>
+  <ion-button @click.prevent="popoverOpen = !popoverOpen" id="click-trigger" expand="full">Create Sub-category in {{ firstBig(URL_CAT) }}</ion-button>
     <ion-popover :is-open="popoverOpen" trigger="click-trigger" trigger-action="click" size="cover">
       <ion-content class="ion-padding">
         <CreateCat @uploaded="uploaded" :subTo="URL_CAT" />
@@ -50,7 +50,8 @@ axios.get(API_URL + '/api/exams/' + URL_CAT).then(res => {
 }
 
 function uploaded(){
-  router.go()
+  popoverOpen.value = false
+  getCats()
 }
 
 

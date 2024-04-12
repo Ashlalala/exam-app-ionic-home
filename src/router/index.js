@@ -36,6 +36,10 @@ const routes = [
         component: () => import('@/views/ExamCreatePage.vue')
       },
       {
+        path: '/profile/completed',
+        component: () => import('@/views/CompletedExamsPage.vue'),
+      },
+      {
         path: '/profile/completed/:examId',
         component: () => import('@/views/CompletedExamPage.vue'),
       },
@@ -44,14 +48,14 @@ const routes = [
         path: '/exam/:examId/',
         component: () => import('@/views/ExamPage.vue'),
       },
+      {
+        path: '/exam/:examId/edit',
+        component: () => import('@/views/ExamEditPage.vue')
+      },
     ]
   },
 
 
-  {
-    path: '/exam/:examId/edit',
-    component: () => import('@/views/ExamEditPage.vue')
-  },
   {
     path: '/exam/:examId/take',
     component: () => import('@/views/ExamTakePage.vue')

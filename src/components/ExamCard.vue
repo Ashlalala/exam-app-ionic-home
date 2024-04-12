@@ -26,7 +26,9 @@
       </div>
 
     <ion-card-header v-if="completed">
-      <ion-card-title>Score: {{ response.completedExam.score*100 }}%</ion-card-title>
+      <ion-card-subtitle v-for="score in [Math.floor(response.completedExam.score*100)]">Score: 
+        <ion-badge :color="score > 70 ? 'success' : score > 40 ? 'warning' : 'danger'">{{ score }}%</ion-badge>
+      </ion-card-subtitle>
     </ion-card-header>
     </ion-card-content>
   </ion-card>
@@ -34,7 +36,7 @@
 </template>
 
 <script setup>
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton } from '@ionic/vue';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, IonBadge } from '@ionic/vue';
 
 const props = defineProps({
   response: {
